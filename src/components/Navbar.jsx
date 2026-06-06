@@ -15,7 +15,7 @@ function Navbar() {
             Anismanis
           </h1>
           <p className="text-sm md:text-base tracking-[0.5em] text-white/90 uppercase font-bold mt-3">
-            Cookie Studio
+            Cookies Cafe
           </p>
         </Link>
 

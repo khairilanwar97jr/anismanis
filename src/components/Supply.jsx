@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import petronImg from "../assets/petron.jpg";
 import hariRayaImg from "../assets/hariraya.jpg";
 import weddingImg from "../assets/kekwedding.jpg";
+import rightCookiesImg from "../assets/rightcookies.png";
 
 function Supply() {
   const [index, setIndex] = useState(0);
@@ -23,14 +24,24 @@ function Supply() {
   }, [index]);
 
   return (
-    <section className="py-20 px-6 bg-[#fff9f9]">
-      <div className="max-w-5xl mx-auto">
+    <section className="py-20 px-6 bg-[#fff9f9] overflow-hidden relative">
+
+      {/* FLOATING DECORATIVE COOKIE (Visible on all sizes, acts as background) */}
+      <motion.div
+        animate={{ y: [0, -25, 0] }}
+        transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
+        className="absolute -right-20 top-40 w-[300px] md:w-[300px] lg:w-[400px] pointer-events-none opacity-100 z-0"
+      >
+        <img src={rightCookiesImg} alt="" className="w-full h-auto" />
+      </motion.div>
+
+      <div className="max-w-5xl mx-auto relative z-10">
         <h2 className="text-4xl md:text-7xl font-black text-[#d87a7a] text-center mb-16 tracking-tighter">
-          OUR SUPPLY & <br className="md:hidden" /> 
+          OUR SUPPLY & <br className="md:hidden" />
           <span className="bg-[#d87a7a] text-white px-4 py-1 inline-block -rotate-2">SERVICES</span>
         </h2>
 
-        {/* MOBILE: Swipeable, Tappable, Auto-cycling with dots */}
+        {/* MOBILE: Swipeable */}
         <div className="md:hidden relative h-[400px] flex flex-col items-center justify-center">
           <AnimatePresence mode="wait">
             <motion.div
@@ -78,7 +89,7 @@ function Supply() {
       <AnimatePresence>
         {selectedService && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-6 bg-black/50 backdrop-blur-sm" onClick={() => setSelectedService(null)}>
-            <motion.div 
+            <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}

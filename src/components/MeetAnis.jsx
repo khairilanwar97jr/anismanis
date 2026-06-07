@@ -1,97 +1,80 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Navbar from '../components/Navbar';
 
 function MeetAnis() {
+  const cafeGallery = [
+    "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80&w=1200",
+    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&q=80&w=1200",
+    "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&q=80&w=1200"
+  ];
 
-// Ekor kanan dipanjangkan ke 5000px
-// Ekor kanan dipanjangkan ke 10,000px
-const cookiePathRight = "M442,0 L10000,0 L10000,600 L322,600 L339,588 C357,577 392,555 421,533 C451,511 475,489 486,466 C498,444 498,422 476,400 C454,377 410,355 382,333 C354,311 342,289 349,266 C356,244 383,222 425,200 C467,177 524,155 537,133 C550,111 518,89 495,66 C472,44 457,22 449,11 Z";
+  const [currentIndex, setCurrentIndex] = useState(0);
 
-// Ekor kiri dipanjangkan ke -10,000px
-const cookiePathLeft = "M-10000,0 L442,0 C457,22 472,44 495,66 C518,89 550,111 537,133 C524,155 467,177 425,200 C383,222 356,244 349,266 C342,289 354,311 382,333 C410,355 454,377 476,400 C498,422 498,444 486,466 C475,489 451,511 421,533 C392,555 357,577 339,588 L322,600 L-10000,600 L-10000,0 Z";
-    const mobileRight = "M150,0 L400,0 L400,600 L120,600 C140,550 160,500 140,450 C160,400 140,350 160,300 C140,250 160,200 140,150 C160,100 140,50 150,20 Z";
-    const mobileLeft = "M0,0 L150,0 C170,30 150,80 170,120 C150,160 170,200 150,240 C170,280 150,320 170,360 C150,400 170,440 150,480 C170,520 150,560 140,600 L0,600 Z";
+  const nextSlide = () => {
+    setCurrentIndex((prev) => (prev === cafeGallery.length - 1 ? 0 : prev + 1));
+  };
 
-    return (
-        <section className="relative w-full min-h-screen bg-white overflow-hidden py-24">
+  return (
+    <section className="relative w-full min-h-screen bg-white">
+      <Navbar />
 
-            {/* 1. LAYER BAWAH: Background Biskut */}
-            {/* Buang opacity-15, tukar kepada opacity-100 (atau buang terus) */}
-            <div className="absolute top-0 right-0 w-[50%] h-full z-0 opacity-100 pointer-events-none">
-                {/* Desktop */}
-                <div
-                    className="hidden lg:block w-full h-full bg-[#d9a066]"
-                    style={{ clipPath: `path("${cookiePathRight}")` }}
-                />
-                {/* Mobile */}
-                <div
-                    className="lg:hidden w-full h-full bg-[#d9a066]"
-                    style={{ clipPath: `path("${mobileRight}")` }}
-                />
-            </div>
+      <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12 px-6 relative w-full pt-32 pb-24">
+        {/* Anis Profile Box */}
+        <div className="w-full md:w-5/12 flex justify-center">
+          <div className="w-full max-w-[350px] aspect-square bg-[#f5e6e0] rounded-[40px] border-4 border-[#4a3728] shadow-[8px_8px_0px_0px_rgba(74,55,40,1)] flex items-center justify-center">
+            <span className="text-[#4a3728] font-black tracking-widest uppercase">Photo of Anis</span>
+          </div>
+        </div>
 
-            {/* 2. CONTENT */}
-            <div className="max-w-6xl mx-auto flex flex-col lg:flex-row items-center gap-12 px-6 z-10 relative w-full">
-                <div className="w-full md:w-5/12 flex justify-center">
-                    <div className="w-full max-w-[350px] aspect-square bg-[#fde047] rounded-[40px] border-4 border-[#4a3728] shadow-[8px_8px_0px_0px_rgba(74,55,40,1)] flex items-center justify-center">
-                        <span className="text-[#4a3728] font-black tracking-widest uppercase">Photo of Anis</span>
-                    </div>
-                </div>
-                <div className="w-full md:w-7/12">
-                    <h2 className="text-4xl md:text-7xl font-black text-[#4a3728] mb-8">
-                        Meet <span className="text-[#d87a7a]">Anis!</span>
-                    </h2>
-                    <div className="space-y-6 text-[#4a3728] font-medium leading-relaxed">
-                        <p className="text-lg">Hi! I am Anis, the Owner and Pastry Chef behind Honeybear Bake Shop!</p>
-                        <p className="text-lg opacity-90">My journey began with a childhood dream.</p>
-                    </div>
-                </div>
-            </div>
+        <div className="w-full md:w-7/12">
+          <h2 className="text-4xl md:text-7xl font-black text-[#4a3728] mb-8">
+            Meet <span className="text-[#d87a7a]">Anis!</span>
+          </h2>
+          <div className="space-y-6 text-[#4a3728] font-medium leading-relaxed">
+            <p className="text-lg">
+              Hi! I am Anis, the founder and pastry architect behind AnisManis Pâtisserie. My journey began in 2022, born from a simple goal: to supply fresh, artisanal bread to my hometown. Seeing neighbors enjoy my bakes was the spark that fueled my passion to refine my skills, moving from rustic loaves to the delicate art of custom cakes.
+            </p>
+            <p className="text-lg opacity-90">
+              The true test of my craft comes during the festive tides. Hari Raya is my favorite time—a whirlwind of tradition where I’ve proudly fulfilled high demand, often crossing over 60 jars of signature biscuits in a single season. Every jar is a testament to the trust my community places in my hands.
+            </p>
+            <p className="text-lg opacity-90">
+              Today, I am evolving. I’m channeling my passion into crafting bespoke dessert tables for weddings, turning grand celebrations into sweet memories. But I am not stopping there. My ultimate vision is to bring the AnisManis experience to the streets of Kuala Lumpur. I am working tirelessly toward the day we open the doors to our very own café—a space where the aroma of fresh bakes and the spirit of community will finally have a permanent home.
+            </p>
+          </div>
+        </div>
+      </div>
 
-{/* 3. LAYER ATAS: Cookie Overlay */}
-{/* 3. LAYER ATAS: Cookie Overlay */}
-{/* Tambah overflow-hidden kat parent supaya biskut tak nampak melimpah kat luar skrin masa animasi */}
-<div className="absolute inset-0 z-20 pointer-events-none flex overflow-hidden">
-  
-  {/* Desktop Version */}
-  <div className="hidden lg:flex w-[120%] -ml-[10%] h-full"> 
-    <motion.div 
-      initial={{ x: '30%' }} // Mula dari sikit je ke tengah
-      whileInView={{ x: '-100%' }} 
-      transition={{ duration: 2.5, ease: [0.4, 0, 0.2, 1] }} 
-      className="w-1/2 h-full bg-[#d9a066]" 
-      style={{ clipPath: `path("${cookiePathLeft}")` }} 
-    />
-    <motion.div 
-      initial={{ x: '-30%' }} 
-      whileInView={{ x: '100%' }} 
-      transition={{ duration: 2.5, ease: [0.4, 0, 0.2, 1] }} 
-      className="w-1/2 h-full bg-[#d9a066]" 
-      style={{ clipPath: `path("${cookiePathRight}")` }} 
-    />
-  </div>
-  
-  {/* Mobile Version */}
-  <div className="lg:hidden flex w-[140%] -ml-[20%] h-full">
-    <motion.div 
-      initial={{ x: '15%' }} 
-      whileInView={{ x: '-100%' }} 
-      transition={{ duration: 2.5, ease: [0.4, 0, 0.2, 1] }} 
-      className="w-1/2 h-full bg-[#d9a066]" 
-      style={{ clipPath: `path("${mobileLeft}")` }} 
-    />
-    <motion.div 
-      initial={{ x: '-15%' }} 
-      whileInView={{ x: '100%' }} 
-      transition={{ duration: 2.5, ease: [0.4, 0, 0.2, 1] }} 
-      className="w-1/2 h-full bg-[#d9a066]" 
-      style={{ clipPath: `path("${mobileRight}")` }} 
-    />
-  </div>
-</div>
-
-        </section>
-    );
+      {/* SMOOTH SLIDER SECTION */}
+      <div className="max-w-4xl mx-auto px-6 pb-24">
+        <div className="border-t-4 border-[#4a3728] pt-16">
+          <h3 className="text-3xl md:text-5xl font-black text-[#4a3728] mb-12 text-center tracking-tighter">Our Vision: The AnisManis Café</h3>
+          
+          <div className="relative w-full aspect-video rounded-[30px] border-4 border-[#4a3728] shadow-[8px_8px_0px_0px_rgba(74,55,40,1)] bg-[#f5e6e0] overflow-hidden group">
+            
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={currentIndex}
+                src={cafeGallery[currentIndex]}
+                initial={{ opacity: 0, x: 100 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -100 }}
+                transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+                className="absolute w-full h-full object-cover"
+              />
+            </AnimatePresence>
+            
+            <button 
+              onClick={nextSlide}
+              className="absolute bottom-6 right-6 bg-[#4a3728] text-white px-8 py-3 rounded-full font-bold shadow-lg hover:bg-[#d87a7a] transition-all z-10"
+            >
+              Next View →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
 }
 
 export default MeetAnis;

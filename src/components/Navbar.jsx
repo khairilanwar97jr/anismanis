@@ -7,11 +7,11 @@ function Navbar() {
   return (
     <nav className="pt-6 bg-[#e5a9a9]">
       <div className="px-6 md:px-12 py-8 flex items-center justify-between w-full">
-        
+
         {/* Logo - Premium Styling */}
         <Link to="/">
           <h1 style={{ fontFamily: "'Fraunces', serif" }}
-              className="text-5xl md:text-6xl font-black text-white italic leading-none tracking-tighter drop-shadow-md">
+            className="text-5xl md:text-6xl font-black text-white italic leading-none tracking-tighter drop-shadow-md">
             Anismanis
           </h1>
           <p className="text-sm md:text-base tracking-[0.5em] text-white/90 uppercase font-bold mt-3">
@@ -24,8 +24,10 @@ function Navbar() {
           <li className="hover:text-[#4a3728] transition-all duration-300 cursor-pointer">
             <Link to="/provisions">Shop Cookies</Link>
           </li>
-          <li className="hover:text-[#4a3728] transition-all duration-300 cursor-pointer">Our Story</li>
-          <li className="hover:text-[#4a3728] transition-all duration-300 cursor-pointer">Gift Boxes</li>
+          <Link to="/our-story">Our Story</Link>
+          <li className="hover:text-[#4a3728] transition-all duration-300 cursor-pointer">
+            <Link to="/gift-box">Gift Boxes</Link>
+          </li>
         </ul>
 
         {/* Desktop Button */}
@@ -47,8 +49,10 @@ function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-[#e5a9a9] px-6 py-10 flex flex-col gap-8 text-white font-bold text-2xl uppercase tracking-widest text-center">
           <Link onClick={() => setIsOpen(false)} to="/provisions">Shop Cookies</Link>
-          <li className="list-none hover:text-[#4a3728] transition-all duration-300 cursor-pointer">Our Story</li>
-          <li className="list-none hover:text-[#4a3728] transition-all duration-300 cursor-pointer">Gift Boxes</li>
+          <Link to="/our-story">Our Story</Link>
+          <Link to="/gift-box" className="list-none hover:text-[#4a3728] transition-all duration-300 cursor-pointer">
+            Gift Boxes
+          </Link>
           <button className="bg-white text-[#4a3728] font-black text-lg px-10 py-5 transition-all duration-300 w-full uppercase tracking-widest">
             Order Now
           </button>

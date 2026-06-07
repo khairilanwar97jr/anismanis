@@ -3,8 +3,15 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom'; // 1. Import useNavigate
 import Navbar from '../components/Navbar';
 
+
+// 1. Import your images
+import kekBrownies from '../assets/kekbrownies.png';
+import kekMarble from '../assets/kekmarble.png';
+import pandan from '../assets/pandan.png';
+
 const Provisions = () => {
     const navigate = useNavigate(); // 2. Initialize navigate
+    const images = [kekBrownies, kekMarble, pandan];
 
     return (
         <div className="min-h-screen bg-white text-[#4a3728]">
@@ -51,7 +58,7 @@ const Provisions = () => {
                                     className="group cursor-pointer"
                                 >
                                     <div className="relative aspect-[3/4] bg-[#f9f5f2] mb-4 overflow-hidden border border-[#4a3728]/5">
-                                        <div className="absolute inset-0 flex items-center justify-center opacity-10 font-black tracking-widest text-xs">IMAGE</div>
+                                        <img src={images[i % images.length]} alt="Cake" className="w-full h-full object-cover" loading="lazy" />
 
                                         <div className="absolute bottom-2 left-2 bg-[#d87a7a] px-2 py-0.5 text-[8px] md:text-[9px] font-black uppercase tracking-[0.1em] md:tracking-[0.2em] text-white">
                                             KL/Selangor

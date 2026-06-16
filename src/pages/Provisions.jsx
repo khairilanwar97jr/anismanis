@@ -13,6 +13,12 @@ const Provisions = () => {
     const navigate = useNavigate(); // 2. Initialize navigate
     const images = [kekBrownies, kekMarble, pandan];
 
+    const products = [
+        { id: 1, name: 'Chocolate Mudslide', price: 100, image: kekMarble },
+        { id: 2, name: 'Kek Pandan', price: 90, image: pandan },
+        { id: 3, name: 'Brownies', price: 80, image: kekBrownies },
+    ];
+
     return (
         <div className="min-h-screen bg-white text-[#4a3728]">
             <Navbar />
@@ -42,31 +48,26 @@ const Provisions = () => {
 
                     {/* Main Grid: Products */}
                     <main className="flex-1">
-                        <div className="flex justify-end mb-8">
-                            <select className="border border-[#4a3728]/20 px-4 py-2 text-sm uppercase font-black tracking-widest bg-transparent cursor-pointer">
-                                <option>Sort by: Reviewed</option>
-                            </select>
-                        </div>
-
                         <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-x-4 md:gap-x-8 gap-y-12 md:gap-y-16">
-                            {[1, 2, 3, 4, 5, 6].map((i) => (
+                            {products.map((product) => (
                                 <motion.div
-                                    key={i}
+                                    key={product.id}
                                     whileHover={{ y: -5 }}
-                                    // 3. Add onClick to navigate to detail page
-                                    onClick={() => navigate(`/provisions/${i}`)} 
+                                    onClick={() => navigate(`/provisions/${product.id}`)}
                                     className="group cursor-pointer"
                                 >
                                     <div className="relative aspect-[3/4] bg-[#f9f5f2] mb-4 overflow-hidden border border-[#4a3728]/5">
-                                        <img src={images[i % images.length]} alt="Cake" className="w-full h-full object-cover" loading="lazy" />
-
-                                        <div className="absolute bottom-2 left-2 bg-[#d87a7a] px-2 py-0.5 text-[8px] md:text-[9px] font-black uppercase tracking-[0.1em] md:tracking-[0.2em] text-white">
+                                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                                        <div className="absolute bottom-2 left-2 bg-[#d87a7a] px-2 py-0.5 text-[8px] md:text-[9px] font-black uppercase tracking-[0.1em] text-white">
                                             KL/Selangor
                                         </div>
                                     </div>
 
-                                    <h3 className="font-bold text-sm md:text-lg mb-0.5 uppercase tracking-tight leading-tight">Chocolate Mudslide</h3>
-                                    <p className="font-black text-md md:text-xl mb-2">RM 150.00</p>
+                                    <h3 className="font-bold text-sm md:text-lg mb-0.5 uppercase tracking-tight leading-tight">
+                                        {product.name}
+                                    </h3>
+                                    <p className="font-black text-md md:text-xl mb-2">RM {product.price.toFixed(2)}</p>
+
                                     <div className="flex flex-col md:flex-row items-start md:items-center gap-0 md:gap-2">
                                         <span className="text-[#d87a7a] text-[10px] md:text-sm tracking-widest">★★★★★</span>
                                         <span className="text-[8px] md:text-[10px] font-bold uppercase tracking-widest opacity-60">10 reviews</span>

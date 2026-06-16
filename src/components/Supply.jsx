@@ -1,11 +1,22 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import petronImg from "../assets/petron.jpg";
 import hariRayaImg from "../assets/hariraya.jpg";
 import weddingImg from "../assets/kekwedding.jpg";
 import rightCookiesImg from "../assets/rightcookies.png";
+import signboard from "../assets/signboard.png";
+
 
 function Supply() {
+
+const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"]
+  });
+// Parallax effect: moves the background image slowly as you scroll
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+
   const [index, setIndex] = useState(0);
   const [selectedService, setSelectedService] = useState(null);
 
@@ -24,18 +35,33 @@ function Supply() {
   }, [index]);
 
   return (
-    <section className="py-20 px-6 bg-[#fff9f9] overflow-hidden relative">
+    <section ref={containerRef} className="py-20 px-6 overflow-hidden relative min-h-[800px] flex items-center justify-center">
+      
+      {/* PARALLAX BACKGROUND LAYER */}
+      <motion.div 
+        style={{ y }} 
+        className="absolute inset-0 z-0 opacity-90"   >
+{/* FIXED BACKGROUND LAYER - Shifted Down */}
+<div className="absolute inset-0 z-0">
+  <img 
+    src={signboard} 
+    alt="background" 
+    loading="lazy"
+    className="w-full h-full object-cover fixed top-35  left-0 right-90" // Changed top-0 to top-20
+  />
+</div>
+      </motion.div>
 
-      {/* FLOATING DECORATIVE COOKIE (Visible on all sizes, acts as background) */}
+      {/* Floating Cookie (Moved inside relative div) */}
       <motion.div
         animate={{ y: [0, -25, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-        className="absolute -right-20 top-40 w-[300px] md:w-[300px] lg:w-[400px] pointer-events-none opacity-100 z-0"
+        className="absolute -right-20 top-40 w-[300px] md:w-[400px] pointer-events-none z-10"
       >
         <img src={rightCookiesImg} alt="" className="w-full h-auto" />
       </motion.div>
 
-      <div className="max-w-5xl mx-auto relative z-10">
+      <div className="max-w-5xl mx-auto relative z-20">
         <h2 className="text-4xl md:text-7xl font-black text-[#d87a7a] text-center mb-16 tracking-tighter">
           OUR SUPPLY & <br className="md:hidden" />
           <span className="bg-[#d87a7a] text-white px-4 py-1 inline-block -rotate-2">SERVICES</span>

@@ -137,52 +137,60 @@ const Cart = () => {
         <h2 className="mb-8 text-xl font-black uppercase tracking-widest text-[#4a3728]">Your Cookie Cart</h2>
 
         {/* CART ITEMS */}
-        <div className="bg-white p-6 rounded-3xl border border-[#4a3728]/10 shadow-sm space-y-8 mb-12">
-          {items.map((item, index) => (
-            <div key={index} className="flex gap-6 pb-8 border-b border-[#4a3728]/10 last:border-0 last:pb-0">
-              <div className="w-20 h-20 rounded-2xl bg-[#f9f5f2] flex-shrink-0 overflow-hidden border border-[#4a3728]/10">
-                <img src={PRODUCTS.find(p => p.id === item.product_id)?.image} alt={item.productName} className="w-full h-full object-cover" />
-              </div>
-              <div className="flex-1">
-                <h3 className="font-black uppercase tracking-tight">{item.productName}</h3>
-                <p className="text-sm font-bold opacity-70">RM {item.price.toFixed(2)}</p>
-                {item.addOns !== 'None' && (
-                  <div className="flex items-center gap-2 mt-2">
-                    <p className="text-[10px] font-bold uppercase bg-[#f5e1c8] px-2 py-0.5 rounded-full text-[#4a3728]">
-                      + {item.addOns} (RM {addonPrices[item.addOns]?.toFixed(2)})
-                    </p>
-                    <button onClick={() => removeAddon(index)} className="text-[10px] font-black underline">Remove Addon</button>
-                  </div>
-                )}
-                {item.giftNote && <p className="text-[10px] italic text-[#4a3728]/60 mt-1">"{item.giftNote}"</p>}
-              </div>
-              <div className="flex flex-col items-end gap-2">
-                <span className="font-black">RM {((item.price + (addonPrices[item.addOns] || 0)) * item.quantity).toFixed(2)}</span>
-                <div className="flex items-center gap-3 bg-[#f9f5f2] rounded-full px-3 py-1">
-                  <button onClick={() => updateQuantity(index, -1)} className="font-black">-</button>
-                  <span className="text-xs font-black w-4 text-center">{item.quantity}</span>
-                  <button onClick={() => updateQuantity(index, 1)} className="font-black">+</button>
-                </div>
+<div className="bg-white p-6 rounded-3xl border border-[#4a3728]/10 shadow-sm space-y-8 mb-12">
+  {items.map((item, index) => (
+    <div key={index} className="flex flex-col sm:flex-row gap-6 pb-8 border-b border-[#4a3728]/10 last:border-0 last:pb-0">
+      
+      {/* Product Image */}
+      <div className="w-20 h-20 rounded-2xl bg-[#f9f5f2] flex-shrink-0 overflow-hidden border border-[#4a3728]/10 self-start">
+        <img src={PRODUCTS.find(p => p.id === item.product_id)?.image} alt={item.productName} className="w-full h-full object-cover" />
+      </div>
 
-{/* NEW EDIT BUTTON */}
-<button 
-  onClick={() => navigate(`/provisions/${item.product_id}`, { state: { editIndex: index } })}
-  className="text-[10px] font-black underline opacity-40 hover:opacity-100 uppercase tracking-widest mt-2"
->
-  Edit Item
-</button>
+      {/* Main Content Area */}
+      <div className="flex-1">
+        <h3 className="font-black uppercase tracking-tight">{item.productName}</h3>
+        <p className="text-sm font-bold opacity-70">RM {item.price.toFixed(2)}</p>
+        
+        {item.addOns !== 'None' && (
+          <div className="flex items-center gap-2 mt-2">
+            <p className="text-[10px] font-bold uppercase bg-[#f5e1c8] px-2 py-0.5 rounded-full text-[#4a3728]">
+              + {item.addOns} (RM {addonPrices[item.addOns]?.toFixed(2)})
+            </p>
+            <button onClick={() => removeAddon(index)} className="text-[10px] font-black underline">Remove Addon</button>
+          </div>
+        )}
+        
+        {item.giftNote && <p className="text-[10px] italic text-[#4a3728]/60 mt-1">"{item.giftNote}"</p>}
+      </div>
 
-                {/* REMOVE ITEM BUTTON */}
-                <button
-                  onClick={() => removeFromCart(index)}
-                  className="text-[10px] font-black opacity-40 hover:opacity-100 hover:text-red-500 transition-all uppercase tracking-widest mt-1"
-                >
-                  ✕ Remove
-                </button>
-              </div>
-            </div>
-          ))}
+      {/* Action/Price Area */}
+      <div className="flex flex-col items-start sm:items-end gap-2">
+        <span className="font-black">RM {((item.price + (addonPrices[item.addOns] || 0)) * item.quantity).toFixed(2)}</span>
+        
+        <div className="flex items-center gap-3 bg-[#f9f5f2] rounded-full px-3 py-1">
+          <button onClick={() => updateQuantity(index, -1)} className="font-black">-</button>
+          <span className="text-xs font-black w-4 text-center">{item.quantity}</span>
+          <button onClick={() => updateQuantity(index, 1)} className="font-black">+</button>
         </div>
+
+        <div className="flex gap-4 sm:flex-col sm:gap-0">
+          <button
+            onClick={() => navigate(`/provisions/${item.product_id}`, { state: { editIndex: index } })}
+            className="text-[10px] font-black underline opacity-40 hover:opacity-100 uppercase tracking-widest mt-2"
+          >
+            Edit Item
+          </button>
+          <button
+            onClick={() => removeFromCart(index)}
+            className="text-[10px] font-black opacity-40 hover:opacity-100 hover:text-red-500 transition-all uppercase tracking-widest mt-2"
+          >
+            ✕ Remove
+          </button>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
 
         {/* CONTACT DETAILS */}
         <div className="space-y-4 mb-12">

@@ -24,7 +24,7 @@ function Hero() {
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
         className="absolute z-10 pointer-events-none opacity-90
           /* MOBILE VERSION: Top right, smaller */
-          top-30 -right-15 w-[290px] 
+          top-30 -right-30 w-[290px] 
           /* DESKTOP VERSION: Larger, shifted down and left */
           md:top-80 md:-right-20 md:w-[300px]"
       >

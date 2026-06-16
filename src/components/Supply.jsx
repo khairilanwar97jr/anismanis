@@ -35,9 +35,7 @@ const containerRef = useRef(null);
   }, [index]);
 
   return (
-    <section ref={containerRef} className="py-20 px-6 overflow-hidden relative min-h-[800px] flex items-center justify-center">
-      
-      {/* PARALLAX BACKGROUND LAYER */}
+<section ref={containerRef} className="pt-12 pb-40 px-6 overflow-hidden relative min-h-[600px] flex items-center justify-center">      {/* PARALLAX BACKGROUND LAYER */}
       <motion.div 
         style={{ y }} 
         className="absolute inset-0 z-0 opacity-90"   >

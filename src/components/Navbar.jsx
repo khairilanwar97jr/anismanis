@@ -8,7 +8,7 @@ function Navbar() {
   const navigate = useNavigate();
 
   return (
-    <nav className="pt-6 bg-[#e5a9a9]">
+    <nav className="pt-6 bg-[#d87a7a]">
       <div className="px-6 md:px-12 py-8 flex items-center justify-between w-full">
 
         {/* Logo */}

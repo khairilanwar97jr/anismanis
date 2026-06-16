@@ -39,7 +39,7 @@ function Hero() {
           preserveAspectRatio="none"
         >
           <path
-            fill="#e5a9a9"
+            fill="#d87a7a"
             d="M0,192L80,208C160,224,320,256,480,256C640,256,800,224,960,197.3C1120,171,1280,149,1360,138.7L1440,128L1440,0L1360,0C1280,0,1120,0,960,0C800,0,640,0,480,0C320,0,160,0,80,0L0,0Z"
           />
         </svg>
@@ -106,40 +106,41 @@ function Hero() {
             }
           }}
         >
-<motion.h1 
-  variants={{
-    hidden: { x: -50, opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
-  }}
-  className="text-6xl md:text-8xl font-bold text-[#4a3728] leading-[1] mb-6 tracking-tighter"
->
-  Baked Daily, <br />
-  <span className="text-[#d87a7a]">With Absolute Care.</span>
-</motion.h1>
+          <motion.h1
+            variants={{
+              hidden: { x: -50, opacity: 0 },
+              visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
+            }}
+            /* - drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]: Adds a dark, sophisticated lift to the brown text.
+            */
+            className="text-6xl md:text-8xl font-bold text-[#fffafa] leading-[1] mb-6 tracking-tighter drop-shadow-[0_2px_4px_rgba(0,0,0,0.3)]"
+          >
+            Baked Daily, <br />
+            {/* - The Gold text with a lighter, glowing shadow to make it pop like foil.
+  */}
+            <span className="text-[#C5A059] drop-shadow-[0_2px_2px_rgba(255,255,255,0.4)]">With Absolute Care.</span>
+          </motion.h1>
 
-<motion.p 
+<motion.p
   variants={{
     hidden: { x: -50, opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
   }}
-  className="text-[#4a3728]/80 font-normal text-xl md:text-2xl max-w-lg mx-auto md:mr-0 mb-8 leading-relaxed"
+  /* Changed text to pink (#d87a7a) with a subtle white shadow for premium readability */
+  className="text-[#d87a7a] font-medium text-l md:text-xl max-w-lg mx-auto md:mr-0 mb-8 leading-relaxed drop-shadow-[0_1px_2px_rgba(255,255,255,0.6)]"
 >
-  Artisanal cookies, crafted with patience and premium ingredients. 
-  Experience the perfect balance of texture and taste.
+  From fresh-baked cookies and signature cakes to custom dessert tables for your special events. 
+  Experience the perfect balance of artisan craft and premium taste.
 </motion.p>
- 
-<motion.div
-  variants={{
-    hidden: { x: -50, opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
-  }}
->
-  <Link to="/provisions">
-    <button className="border-2 border-[#4a3728] text-[#4a3728] px-12 py-4 font-bold uppercase tracking-widest hover:bg-[#d87a7a] hover:border-[#d87a7a] hover:text-white transition-all duration-300">
-      Explore Menu
-    </button>
-  </Link>
-</motion.div>
+
+          <motion.div>
+            <Link to="/provisions">
+              {/* Button with a soft shadow to give it a "physical" feel */}
+              <button className="bg-[#4a3728] border-2 border-[#C5A059] text-[#C5A059] px-12 py-4 font-bold uppercase tracking-widest hover:bg-[#C5A059] hover:text-[#4a3728] transition-all duration-300 shadow-[0_4px_10px_rgba(0,0,0,0.2)]">
+                Explore Menu
+              </button>
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
     </section>

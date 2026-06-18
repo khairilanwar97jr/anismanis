@@ -13,7 +13,10 @@ const Provisions = () => {
     useEffect(() => {
         const fetchProducts = async () => {
             try {
-                const response = await fetch('http://localhost:3000/api/products');
+                const response = await apiFetch('/api/products');
+                if (!response.ok) {
+                  throw new Error(`Failed to fetch products: ${response.status}`);
+                }
                 const data = await response.json();
 
                 setProducts(data);

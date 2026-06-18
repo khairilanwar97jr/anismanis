@@ -4,6 +4,7 @@ import Supply from '../components/Supply'
 import Booking from '../components/Booking'
 import MeetAnis from '../components/MeetAnis'
 import MenuCategories from '../components/MenuCategories'
+import LatestBooking from '../components/LatestBooking'
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 function HomePage() {
@@ -24,6 +25,7 @@ function HomePage() {
       <Booking />
       {/* <MeetAnis /> */}
       <MenuCategories />
+      <LatestBooking /> 
 
 
 

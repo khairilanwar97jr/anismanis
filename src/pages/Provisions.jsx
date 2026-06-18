@@ -1,23 +1,29 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom'; // 1. Import useNavigate
 import Navbar from '../components/Navbar';
-
-
-// 1. Import your images
-import kekBrownies from '../assets/kekbrownies.png';
-import kekMarble from '../assets/kekmarble.png';
-import pandan from '../assets/pandan.png';
+import { apiFetch } from '../api';
 
 const Provisions = () => {
     const navigate = useNavigate(); // 2. Initialize navigate
-    const images = [kekBrownies, kekMarble, pandan];
 
-    const products = [
-        { id: 1, name: 'Chocolate Mudslide', price: 100, image: kekMarble },
-        { id: 2, name: 'Kek Pandan', price: 90, image: pandan },
-        { id: 3, name: 'Brownies', price: 80, image: kekBrownies },
-    ];
+    const [products, setProducts] = useState([]);
+
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch('http://localhost:3000/api/products');
+                const data = await response.json();
+
+                setProducts(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchProducts();
+    }, []);
 
     return (
         <div className="min-h-screen bg-white text-[#4a3728]">
@@ -57,7 +63,11 @@ const Provisions = () => {
                                     className="group cursor-pointer"
                                 >
                                     <div className="relative aspect-[3/4] bg-[#f9f5f2] mb-4 overflow-hidden border border-[#4a3728]/5">
-                                        <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
+                                        <img
+                                            src={product.image_url || "https://via.placeholder.com/300x400"}
+                                            alt={product.name}
+                                            className="w-full h-full object-cover"
+                                        />
                                         <div className="absolute bottom-2 left-2 bg-[#d87a7a] px-2 py-0.5 text-[8px] md:text-[9px] font-black uppercase tracking-[0.1em] text-white">
                                             KL/Selangor
                                         </div>

@@ -1,49 +1,79 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate, useParams, useLocation } from 'react-router-dom'; // Added useLocation here
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { useCart } from '../context/CartContext';
-import kekBrownies from '../assets/kekbrownies.png';
-import kekMarble from '../assets/kekmarble.png';
-import pandan from '../assets/pandan.png';
-
-const PRODUCTS = [
-  { id: '1', name: 'Chocolate Mudslide', price: 100, image: kekMarble, desc: 'Crafted with 24-hour fermented sourdough and premium dark chocolate.' },
-  { id: '2', name: 'Kek Pandan', price: 90, image: pandan, desc: 'A fragrant, airy delight infused with fresh pandan extract and coconut milk.' },
-  { id: '3', name: 'Brownies', price: 80, image: kekBrownies, desc: 'Decadent, fudgy, and rich—the perfect companion for your coffee.' },
-];
+import { apiFetch } from '../api';
 
 const ProductDetail = () => {
-  const { addToCart, items, updateItem } = useCart(); // Added updateItem
+  const { addToCart, items, updateItem } = useCart();
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
-  const product = PRODUCTS.find((p) => p.id === id);
 
-  // Check if we are editing
+  const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
+
   const editIndex = location.state?.editIndex;
   const isEditing = editIndex !== undefined;
+  const returnToCartState = location.state?.returnToCartState;
 
-  // Use useEffect to pre-fill the form ONLY if editing
   const [quantity, setQuantity] = useState(1);
-  const [addOns, setAddOns] = useState('None');
+  const [addons, setAddons] = useState([]);
+  const [selectedAddonId, setSelectedAddonId] = useState('');
   const [giftNote, setGiftNote] = useState('');
 
+  useEffect(() => {
+    const fetchAddons = async () => {
+      try {
+        const res = await apiFetch('/api/addons');
+        const data = await res.json();
+        setAddons(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchAddons();
+  }, []);
+
+
+  // FETCH PRODUCT FROM API
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await apiFetch(`/api/products/${id}`);
+        const data = await response.json();
+        setProduct(data);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  // PREFILL WHEN EDITING CART ITEM
   useEffect(() => {
     if (isEditing && items[editIndex]) {
       const item = items[editIndex];
       setQuantity(item.quantity);
-      setAddOns(item.addOns);
+      setSelectedAddonId(item.addOns?.[0]?.id ? String(item.addOns[0].id) : '');
       setGiftNote(item.giftNote || '');
     }
   }, [isEditing, editIndex, items]);
 
   const handleProceed = () => {
+
+    const selectedAddon = addons.find(a => String(a.id) === selectedAddonId);
     const productData = {
       product_id: product.id,
       productName: product.name,
-      price: product.price,
+      price: Number(product.price),
       quantity,
-      addOns,
+      image_url: product.image_url,
+      addOns: selectedAddon ? [{ ...selectedAddon, quantity }] : [],
       giftNote
     };
 
@@ -52,84 +82,162 @@ const ProductDetail = () => {
     } else {
       addToCart(productData);
     }
-    navigate('/cart');
+
+    navigate('/cart', { state: returnToCartState });
   };
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white text-[#4a3728]">
+        <Navbar />
+        <div className="container mx-auto px-6 py-16">
+          <div className="grid md:grid-cols-2 gap-16 animate-pulse">
+            <div className="aspect-[3/4] bg-[#f9f5f2] border border-[#4a3728]/10" />
+            <div className="flex flex-col">
+              <div className="h-12 w-3/4 bg-[#f9f5f2] mb-4" />
+              <div className="h-8 w-32 bg-[#f9f5f2] mb-8" />
+              <div className="space-y-3 mb-8">
+                <div className="h-4 w-full bg-[#f9f5f2]" />
+                <div className="h-4 w-5/6 bg-[#f9f5f2]" />
+              </div>
+              <div className="h-12 w-full bg-[#f9f5f2] mb-6" />
+              <div className="h-12 w-full bg-[#f9f5f2] mb-6" />
+              <div className="h-24 w-full bg-[#f9f5f2] mb-6" />
+              <div className="h-14 w-full bg-[#4a3728]/20" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!product) {
+    return (
+      <div className="min-h-screen bg-white text-[#4a3728]">
+        <Navbar />
+        <div className="container mx-auto px-6 py-24 text-center">
+          <h1 className="text-3xl font-black uppercase mb-3">Product Not Found</h1>
+          <p className="text-sm font-medium opacity-70 mb-8">This item could not be loaded.</p>
+          <button
+            onClick={() => navigate('/provisions')}
+            className="bg-[#4a3728] text-white px-8 py-4 font-black uppercase"
+          >
+            Back to Menu
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white text-[#4a3728]">
       <Navbar />
+
       <div className="container mx-auto px-6 py-16">
         <div className="grid md:grid-cols-2 gap-16">
-          
-          {/* Left: Image & Highlights */}
-          <div className="space-y-8">
-            <div className="aspect-[3/4] bg-[#f9f5f2] border border-[#4a3728]/10 flex items-center justify-center overflow-hidden">
-               <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-            </div>
-            
-            {/* Premium Highlights */}
-            <div className="grid grid-cols-2 gap-4">
-               <div className="p-4 border border-[#4a3728]/10 text-center">
-                  <p className="font-black text-xs uppercase">Small Batch</p>
-               </div>
-               <div className="p-4 border border-[#4a3728]/10 text-center">
-                  <p className="font-black text-xs uppercase">Freshly Baked</p>
-               </div>
-            </div>
+
+          {/* IMAGE */}
+          <div className="aspect-[3/4] bg-[#f9f5f2] border border-[#4a3728]/10 overflow-hidden">
+            <img
+              src={product.image_url || "https://via.placeholder.com/400x500"}
+              alt={product.name}
+              className="w-full h-full object-cover"
+            />
           </div>
 
-          {/* Right: Order Form */}
+          {/* DETAILS */}
           <div className="flex flex-col">
-            <h1 className="text-5xl font-black italic tracking-tighter mb-2">{product.name}</h1>
-            <p className="text-2xl font-black mb-6 text-[#d87a7a]">RM {product.price.toFixed(2)}</p>
-            <p className="text-[#4a3728]/70 mb-8 leading-relaxed">{product.desc}</p>
+            <h1 className="text-5xl font-black mb-2">{product.name}</h1>
 
-            <div className="space-y-8 border-t border-[#4a3728]/10 pt-8">
+            <p className="text-2xl font-black text-[#d87a7a] mb-6">
+              RM {Number(product.price).toFixed(2)}
+            </p>
 
-              {/* Quantity */}
-              <div>
-                <label className="block font-bold uppercase tracking-widest text-xs mb-3">Quantity</label>
+            <p className="text-[#4a3728]/70 mb-8">
+              {product.description}
+            </p>
+
+            {/* QUANTITY */}
+            <div className="mb-6">
+              <label className="block font-bold text-xs uppercase mb-2">
+                Quantity
+              </label>
+
+              {/* Desktop: numeric input */}
+              <div className="hidden md:block">
                 <input
                   type="number"
                   min="1"
                   value={quantity}
-                  className="w-full border border-[#4a3728]/20 p-4 font-bold text-sm bg-transparent"
-                  onChange={(e) => setQuantity(parseInt(e.target.value))}
+                  onChange={(e) => setQuantity(Math.max(1, Number(e.target.value || 1)))}
+                  className="border p-3 w-full"
                 />
               </div>
 
-              {/* Add-ons */}
-              <div>
-                <label className="block font-bold uppercase tracking-widest text-xs mb-3">Premium Add-ons</label>
-                <select
-                  className="w-full border border-[#4a3728]/20 p-4 font-bold text-sm bg-transparent uppercase"
-                  value={addOns}
-                  onChange={(e) => setAddOns(e.target.value)}
+              {/* Mobile: explicit +/- controls for better touch UX */}
+              <div className="flex items-center gap-3 md:hidden">
+                <button
+                  type="button"
+                  onClick={() => setQuantity(q => Math.max(1, Number(q) - 1))}
+                  className="w-12 h-12 bg-[#f9f5f2] border border-[#4a3728]/10 rounded-full flex items-center justify-center text-2xl font-black text-[#4a3728]"
+                  aria-label="Decrease quantity"
                 >
-                  <option value="None">None</option>
-                  <option value="Artisan Candles">Artisan Candles (+RM 5)</option>
-                  <option value="Gift Ribbon">Gift Ribbon (+RM 2)</option>
-                </select>
-              </div>
+                  −
+                </button>
 
-              {/* Gift Note */}
-              <div>
-                <label className="block font-bold uppercase tracking-widest text-xs mb-3">Personalized Gift Note</label>
-                <textarea
-                  className="w-full border border-[#4a3728]/20 p-4 font-medium text-sm h-24 bg-transparent"
-                  placeholder="Include a message for your recipient..."
-                  onChange={(e) => setGiftNote(e.target.value)}
-                />
-              </div>
+                <div className="flex-1 text-center font-black text-lg">{quantity}</div>
 
-{/* Change the button text dynamically */}
-  <button
-    onClick={handleProceed}
-    className="w-full bg-[#4a3728] text-white py-6 font-black uppercase tracking-widest hover:bg-[#d87a7a] transition-all"
-  >
-    {isEditing ? 'Save Changes' : 'Add to Cart'}
-  </button>
+                <button
+                  type="button"
+                  onClick={() => setQuantity(q => Number(q) + 1)}
+                  className="w-12 h-12 bg-[#d87a7a] text-white rounded-full flex items-center justify-center text-2xl font-black"
+                  aria-label="Increase quantity"
+                >
+                  +
+                </button>
+              </div>
             </div>
+
+            {/* ADD ONS */}
+            <div className="mb-6">
+              <label className="block font-bold text-xs uppercase mb-2">
+                Add-ons
+              </label>
+              <select
+                value={selectedAddonId}
+                onChange={(e) => setSelectedAddonId(e.target.value)}
+                className="border p-3 w-full"
+              >
+                <option value="">No Add-on</option>
+
+                {addons.map((addon) => (
+                  <option key={addon.id} value={addon.id}>
+                    {addon.name} (+RM {addon.price})
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* GIFT NOTE */}
+            <div className="mb-6">
+              <label className="block font-bold text-xs uppercase mb-2">
+                Gift Note
+              </label>
+              <textarea
+                value={giftNote}
+                onChange={(e) => setGiftNote(e.target.value)}
+                className="border p-3 w-full h-24"
+              />
+            </div>
+
+            {/* BUTTON */}
+            <button
+              onClick={handleProceed}
+              className="w-full bg-[#4a3728] text-white py-4 font-black uppercase"
+            >
+              {isEditing ? 'Save Changes' : 'Add to Cart'}
+            </button>
+
           </div>
         </div>
       </div>

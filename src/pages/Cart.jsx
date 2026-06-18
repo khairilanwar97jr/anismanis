@@ -6,9 +6,6 @@ import { MapContainer, TileLayer, Marker, useMapEvents, useMap, Circle, Polyline
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
-import kekBrownies from '../assets/kekbrownies.png';
-import kekMarble from '../assets/kekmarble.png';
-import pandan from '../assets/pandan.png';
 import signboard from '../assets/signboard.png';
 
 delete L.Icon.Default.prototype._getIconUrl;
@@ -18,11 +15,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 });
 
-const PRODUCTS = [
-  { id: '1', name: 'Chocolate Mudslide', price: 100, image: kekMarble },
-  { id: '2', name: 'Kek Pandan', price: 90, image: pandan },
-  { id: '3', name: 'Brownies', price: 80, image: kekBrownies },
-];
+
 
 const SHOP_COORDS = [3.1761739896247194, 101.54584049504571];
 
@@ -68,10 +61,9 @@ function LocationMarker({ onCoordsChange }) {
 }
 
 const Cart = () => {
-  const { items, removeFromCart, updateQuantity, setItems } = useCart(); // Assuming setItems is available in context
+  const { items, removeFromCart, updateQuantity, setItems } = useCart();
   const navigate = useNavigate();
   const location = useLocation();
-
   const [customerInfo, setCustomerInfo] = useState(location.state?.customerInfo || { name: '', phone: '', email: '' });
   const [deliveryType, setDeliveryType] = useState(location.state?.deliveryType || 'PICKUP');
   const [deliveryDetails, setDeliveryDetails] = useState(location.state?.deliveryDetails || {
@@ -83,15 +75,17 @@ const Cart = () => {
   const [userPos, setUserPos] = useState(location.state?.deliveryDetails ? [location.state.deliveryDetails.lat, location.state.deliveryDetails.lng] : SHOP_COORDS);
   const [mapCenter, setMapCenter] = useState(location.state?.deliveryDetails ? [location.state.deliveryDetails.lat, location.state.deliveryDetails.lng] : SHOP_COORDS);
 
-  const addonPrices = { 'None': 0, 'Artisan Candles': 5, 'Gift Ribbon': 2 };
 
-  // New function to remove add-on
   const removeAddon = (index) => {
     const newItems = [...items];
-    newItems[index] = { ...newItems[index], addOns: 'None' };
-    // Assuming you have access to setItems from your CartProvider, 
-    // if not, you may need to add it to your context export
+    newItems[index] = { ...newItems[index], addOns: [] };
     setItems(newItems);
+  };
+
+  const getAddon = (item) => item.addOns?.[0] || item.addon || null;
+  const getAddonQuantity = (item) => {
+    const addon = getAddon(item);
+    return addon?.quantity !== undefined && addon?.quantity !== null ? Number(addon.quantity) : Number(item.quantity || 1);
   };
 
   const updateDeliveryField = (field, value) => {
@@ -127,8 +121,29 @@ const Cart = () => {
     navigate('/checkout-summary', { state: { deliveryDetails, total, deliveryType, customerInfo, isLocated } });
   };
 
-  const subtotal = items.reduce((sum, item) => sum + ((item.price + (addonPrices[item.addOns] || 0)) * item.quantity), 0);
+  const handleEditItem = (index, productId) => {
+    navigate(`/provisions/${productId}`, {
+      state: {
+        editIndex: index,
+        returnToCartState: {
+          customerInfo,
+          deliveryType,
+          deliveryDetails,
+          isLocated
+        }
+      }
+    });
+  };
+
+  const subtotal = items.reduce((sum, item) => {
+    const addon = getAddon(item);
+    const addonPrice = addon?.price ?? 0;
+    const addonQuantity = getAddonQuantity(item);
+
+    return sum + Number(item.price) * Number(item.quantity) + Number(addonPrice) * addonQuantity;
+  }, 0);
   const total = deliveryType === 'DELIVERY' ? subtotal + deliveryDetails.fee : subtotal;
+
 
   return (
     <div className="min-h-screen bg-[#fefdfa] text-[#4a3728]">
@@ -139,25 +154,42 @@ const Cart = () => {
 
         {/* CART ITEMS */}
         <div className="bg-white p-6 rounded-3xl border border-[#4a3728]/10 shadow-sm space-y-8 mb-12">
-          {items.map((item, index) => (
+          {items?.map((item, index) => {
+            const addon = getAddon(item);
+
+            return (
             <div key={index} className="flex flex-col sm:flex-row gap-6 pb-8 border-b border-[#4a3728]/10 last:border-0 last:pb-0">
 
               {/* Product Image */}
               <div className="w-20 h-20 rounded-2xl bg-[#f9f5f2] flex-shrink-0 overflow-hidden border border-[#4a3728]/10 self-start">
-                <img src={PRODUCTS.find(p => p.id === item.product_id)?.image} alt={item.productName} className="w-full h-full object-cover" />
-              </div>
+                <img
+                  src={item.image_url || "https://via.placeholder.com/80"}
+                  alt={item.productName}
+                  className="w-full h-full object-cover"
+                />              </div>
 
               {/* Main Content Area */}
               <div className="flex-1">
                 <h3 className="font-black uppercase tracking-tight">{item.productName}</h3>
-                <p className="text-sm font-bold opacity-70">RM {item.price.toFixed(2)}</p>
+                <div className="mt-1 space-y-1 text-sm font-bold opacity-70">
+                  <p>Cake: RM {Number(item.price).toFixed(2)}</p>
+                  {addon && (
+                    <p>Add-on: RM {Number(addon.price).toFixed(2)}</p>
+                  )}
+                </div>
 
-                {item.addOns !== 'None' && (
+                {addon && (
                   <div className="flex items-center gap-2 mt-2">
                     <p className="text-[10px] font-bold uppercase bg-[#f5e1c8] px-2 py-0.5 rounded-full text-[#4a3728]">
-                      + {item.addOns} (RM {addonPrices[item.addOns]?.toFixed(2)})
+                      + {addon.name}
                     </p>
-                    <button onClick={() => removeAddon(index)} className="text-[10px] font-black underline">Remove Addon</button>
+
+                    <button
+                      onClick={() => removeAddon(index)}
+                      className="text-[10px] font-black underline"
+                    >
+                      Remove Addon
+                    </button>
                   </div>
                 )}
 
@@ -166,7 +198,12 @@ const Cart = () => {
 
               {/* Action/Price Area */}
               <div className="flex flex-col items-start sm:items-end gap-2">
-                <span className="font-black">RM {((item.price + (addonPrices[item.addOns] || 0)) * item.quantity).toFixed(2)}</span>
+                <div className="text-left sm:text-right">
+                  <p className="text-[10px] font-black uppercase tracking-widest opacity-50">Item Total</p>
+                  <span className="font-black text-lg">
+                    RM {((Number(item.price) + Number(addon?.price || 0)) * item.quantity).toFixed(2)}
+                  </span>
+                </div>
 
                 <div className="flex items-center gap-3 bg-[#f9f5f2] rounded-full px-3 py-1">
                   <button onClick={() => updateQuantity(index, -1)} className="font-black">-</button>
@@ -176,7 +213,7 @@ const Cart = () => {
 
                 <div className="flex gap-4 sm:flex-col sm:gap-0">
                   <button
-                    onClick={() => navigate(`/provisions/${item.product_id}`, { state: { editIndex: index } })}
+                    onClick={() => handleEditItem(index, item.product_id)}
                     className="text-[10px] font-black underline opacity-40 hover:opacity-100 uppercase tracking-widest mt-2"
                   >
                     Edit Item
@@ -190,7 +227,8 @@ const Cart = () => {
                 </div>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* CONTACT DETAILS */}
@@ -224,14 +262,14 @@ const Cart = () => {
           {/* PICKUP VIEW */}
           {deliveryType === 'PICKUP' && (
             <div className="bg-white p-6 rounded-3xl border border-[#4a3728]/10 shadow-sm animate-in fade-in duration-500">
-<div className="w-full h-48 rounded-2xl overflow-hidden mb-4 border border-[#4a3728]/10 bg-[#f9f5f2] flex items-center justify-center">
-  <img
-    src={signboard}
-    alt="Pickup Location"
-    className="w-full h-full object-cover"
-    loading="lazy" 
-  />
-</div>
+              <div className="w-full h-48 rounded-2xl overflow-hidden mb-4 border border-[#4a3728]/10 bg-[#f9f5f2] flex items-center justify-center">
+                <img
+                  src={signboard}
+                  alt="Pickup Location"
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                />
+              </div>
               <h3 className="font-black text-lg uppercase">Collect at our Cafe</h3>
               <p className="text-sm font-medium opacity-70 mt-1 mb-4">
                 Swing by our shop to collect your freshly baked cookies! We're ready for you.

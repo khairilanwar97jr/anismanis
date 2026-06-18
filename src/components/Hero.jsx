@@ -121,17 +121,17 @@ function Hero() {
             <span className="text-[#C5A059] drop-shadow-[0_2px_2px_rgba(255,255,255,0.4)]">With Absolute Care.</span>
           </motion.h1>
 
-<motion.p
-  variants={{
-    hidden: { x: -50, opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
-  }}
-  /* Changed text to pink (#d87a7a) with a subtle white shadow for premium readability */
-  className="text-[#d87a7a] font-medium text-l md:text-xl max-w-lg mx-auto md:mr-0 mb-8 leading-relaxed drop-shadow-[0_1px_2px_rgba(255,255,255,0.6)]"
->
-  From fresh-baked cookies and signature cakes to custom dessert tables for your special events. 
-  Experience the perfect balance of artisan craft and premium taste.
-</motion.p>
+          <motion.p
+            variants={{
+              hidden: { x: -50, opacity: 0 },
+              visible: { x: 0, opacity: 1, transition: { duration: 0.8, ease: "easeOut" } }
+            }}
+            /* Changed text to pink (#d87a7a) with a subtle white shadow for premium readability */
+            className="text-[#d87a7a] font-medium text-l md:text-xl max-w-lg mx-auto md:mr-0 mb-8 leading-relaxed drop-shadow-[0_1px_2px_rgba(255,255,255,0.6)]"
+          >
+            From fresh-baked cookies and signature cakes to custom dessert tables for your special events.
+            Experience the perfect balance of artisan craft and premium taste.
+          </motion.p>
 
           <motion.div>
             <Link to="/provisions">

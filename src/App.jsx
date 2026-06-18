@@ -9,6 +9,7 @@ import CheckoutSummary from './pages/CheckoutSummary';
 import OurStoryPage from './pages/OurStoryPage';
 import GiftBox from './pages/GiftBox';
 import Cart from './pages/Cart';
+import PaymentSuccess from './pages/PaymentSuccess';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/provisions" element={<Provisions />} />
           <Route path="/provisions/:id" element={<ProductDetail />} />
           <Route path="/checkout-summary" element={<CheckoutSummary />} />
+          <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="/cart" element={<Cart />} />
         </Routes>
       </Router>

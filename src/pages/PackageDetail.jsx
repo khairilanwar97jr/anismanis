@@ -152,7 +152,7 @@ const PackageDetail = () => {
   return (
     <section className="relative w-full min-h-screen bg-white">
       <Navbar />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
         <div className="space-y-4 mb-12 text-center sm:text-left">
           <p className="text-xs uppercase tracking-[0.4em] text-[#d87a7a]/90">Dessert Package</p>
           <h1 className="text-4xl md:text-5xl font-black uppercase leading-tight">{selectedPackage.name}</h1>

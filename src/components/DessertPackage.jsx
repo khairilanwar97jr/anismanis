@@ -63,7 +63,7 @@ const DessertPackages = () => {
                             variants={cardVariants}
                             className="border border-[#4a3728]/10 p-3 md:p-8 rounded-2xl flex flex-col items-center text-center hover:border-[#d87a7a]/50"
                         >
-                            <div className="w-full h-32 md:h-64 mb-3 overflow-hidden rounded-xl bg-[#f9f5f2]">
+                            <div className="w-full h-45 md:h-64 mb-8 overflow-hidden rounded-xl bg-[#f9f5f2]">
                                 <img
                                     src={pkg.image}
                                     alt={pkg.name}

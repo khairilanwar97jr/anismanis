@@ -29,7 +29,7 @@ const LatestOrders = () => {
     ).join('');
     
     const text = `Hi, I have a query about order #${order.id}.\n\nCustomer: ${order.customer_name}\nStatus: ${order.payment_status}${itemsText}`;
-    window.open(`https://wa.me/60173469335?text=${encodeURIComponent(text)}`, '_blank');
+    window.open(`https://wa.me/601126913096?text=${encodeURIComponent(text)}`, '_blank');
   };
 
   return (

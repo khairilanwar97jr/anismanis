@@ -3,7 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { apiFetch } from '../api';
 
 const PROCESSING_FEE = 1.25;
-const WHATSAPP_PHONE = '60173469335';
+const WHATSAPP_PHONE = '601126913096';
 
 const PaymentSuccess = () => {
   const [searchParams] = useSearchParams();
@@ -104,8 +104,7 @@ useEffect(() => {
 
       return [
         `${index + 1}. ${item.product_name || 'Cake'} x${item.quantity}`,
-        item.image_url ? `   Image: ${item.image_url}` : '',
-        `   Cake - RM ${(Number(item.price || 0) * Number(item.quantity || 1)).toFixed(2)}`,
+        `   Item - RM ${(Number(item.price || 0) * Number(item.quantity || 1)).toFixed(2)}`,
         addons,
         item.message ? `   Note: ${item.message}` : ''
       ].filter(Boolean).join('\n');

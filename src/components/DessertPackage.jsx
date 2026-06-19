@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import wedding from '../assets/wedding.png';
 import genderreveal from '../assets/genderreveal.png';
 import sweetbasics from '../assets/sweetbasics.png';
@@ -73,9 +74,12 @@ const DessertPackages = () => {
                             <h3 className="font-black uppercase tracking-widest text-[10px] md:text-2xl mb-1 md:mb-3 leading-tight">{pkg.name}</h3>
                             <p className="text-[9px] md:text-sm font-bold opacity-60 mb-2 md:mb-6 flex-grow hidden md:block">{pkg.desc}</p>
                             <div className="text-[#d87a7a] font-black text-xs md:text-2xl mb-2 md:mb-8">{pkg.price}</div>
-                            <button className="w-full py-2 md:py-4 border-2 border-[#4a3728] font-black uppercase tracking-widest text-[10px] md:text-sm hover:bg-[#4a3728] hover:text-white transition-all">
+                            <Link
+                                to={`/package/${encodeURIComponent(pkg.name)}`}
+                                className="w-full inline-block py-2 md:py-4 border-2 border-[#4a3728] font-black uppercase tracking-widest text-[10px] md:text-sm hover:bg-[#4a3728] hover:text-white transition-all"
+                            >
                                 Select
-                            </button>
+                            </Link>
                         </motion.div>
                     ))}
                 </motion.div>

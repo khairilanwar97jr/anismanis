@@ -10,6 +10,7 @@ import OurStoryPage from './pages/OurStoryPage';
 import GiftBox from './pages/GiftBox';
 import Cart from './pages/Cart';
 import PaymentSuccess from './pages/PaymentSuccess';
+import PackageDetail from './pages/PackageDetail'; // Import the new PackageDetail component
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/checkout-summary" element={<CheckoutSummary />} />
           <Route path="/payment/success" element={<PaymentSuccess />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/package/:packageName" element={<PackageDetail />} />
         </Routes>
       </Router>
     </CartProvider>

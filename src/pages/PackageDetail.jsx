@@ -201,12 +201,40 @@ const PackageDetail = () => {
                 ))}
               </div>
 
-              <div className="min-h-[220px] leading-relaxed text-sm text-[#4a3728]/90">
-                {activeTab === 'About' && <p>Our package offers a beautifully styled dessert table with a thoughtful selection of treats to fit your occasion.</p>}
-                {activeTab === 'Flavours' && <p>Flavours are chosen to match your theme. Tell us your preferences and we’ll design a sweet menu just for you.</p>}
-                {activeTab === 'Delivery' && <p>Delivery and setup are available across Klang Valley, with optional professional styling by our team.</p>}
-                {activeTab === 'Important' && <p>Please note availability is subject to event date and inventory; book early to secure your preferred package.</p>}
-              </div>
+<div className="min-h-[220px] leading-relaxed text-sm text-[#4a3728]/90 space-y-4">
+  {activeTab === 'About' && (
+    <>
+      <p className="font-bold">Elevate your celebration with our professionally curated dessert tables.</p>
+      <p>Each package is designed to be the centerpiece of your event, featuring a bespoke selection of premium sweets and savouries. We focus on aesthetic styling that complements your theme perfectly.</p>
+    </>
+  )}
+  {activeTab === 'Flavours' && (
+    <>
+      <p className="font-bold">Fully customizable menu to suit your palate.</p>
+      <ul className="list-disc pl-4 space-y-1">
+        <li>Classic selections: Chocolate Ganache, Vanilla Bean, and Salted Caramel.</li>
+        <li>Dietary options: Please inform us of any allergies or preferences (e.g., nut-free, vegetarian).</li>
+        <li>All items are freshly baked and prepared 24 hours before your event.</li>
+      </ul>
+    </>
+  )}
+  {activeTab === 'Delivery' && (
+    <>
+      <p className="font-bold">Professional setup across Klang Valley.</p>
+      <p>We provide end-to-end service including transportation, table styling, and professional dismantling. Our team arrives 60-90 minutes prior to your event start time to ensure everything is perfect.</p>
+    </>
+  )}
+  {activeTab === 'Important' && (
+    <>
+      <p className="font-bold">Booking & Cancellation Policy</p>
+      <ul className="list-disc pl-4 space-y-1">
+        <li>A 50% deposit is required to secure your date.</li>
+        <li>Availability is limited; we recommend booking at least 2 weeks in advance.</li>
+        <li>Date changes are subject to availability and must be communicated 7 days prior.</li>
+      </ul>
+    </>
+  )}
+</div>
             </div>
           </div>
 
@@ -255,22 +283,69 @@ const PackageDetail = () => {
                 </select>
               </div>
 
-              <div>
-                <label className="block font-black uppercase mb-2">Delivery & Setup</label>
-                <div className="space-y-3">
-                  <label className="flex items-center gap-3"><input type="radio" name="del" className="h-4 w-4" onChange={() => setDelivery(300)} /> <span>Yes (+RM 300)</span></label>
-                  <label className="flex items-center gap-3"><input type="radio" name="del" className="h-4 w-4" onChange={() => setDelivery(0)} /> <span>No (RM 0)</span></label>
-                </div>
-              </div>
+             <div className="space-y-6">
+  {/* Delivery & Setup Section */}
+  <div>
+    <label className="block font-black uppercase mb-3 text-sm text-[#4a3728]">Delivery and Set Up</label>
+    <div className="space-y-4">
+      <label className="flex items-start gap-3 cursor-pointer">
+        <input 
+          type="radio" 
+          name="del" 
+          className="mt-1 h-5 w-5 accent-[#d87a7a]" 
+          onChange={() => setDelivery(500)} 
+        />
+        <span className="text-sm text-[#4a3728]/80">
+          <strong className="block text-[#4a3728]">Yes (+RM 500)</strong>
+          Inclusive of Delivery + Table Deco + Disposable Plates and Cutleries + Dismantling Service
+        </span>
+      </label>
+      <label className="flex items-start gap-3 cursor-pointer">
+        <input 
+          type="radio" 
+          name="del" 
+          className="mt-1 h-5 w-5 accent-[#d87a7a]" 
+          onChange={() => setDelivery(0)} 
+        />
+        <span className="text-sm text-[#4a3728]/80">
+          <strong className="block text-[#4a3728]">No (+RM 0)</strong>
+          I prefer to only order the food and will arrange my own delivery or pick-up during check-out
+        </span>
+      </label>
+    </div>
+  </div>
 
-              <div>
-                <label className="block font-black uppercase mb-2">Extra Table</label>
-                <div className="space-y-3">
-                  <label className="flex items-center gap-3"><input type="radio" name="tbl" className="h-4 w-4" onChange={() => setExtraTable(150)} /> <span>Yes (+RM 150)</span></label>
-                  <label className="flex items-center gap-3"><input type="radio" name="tbl" className="h-4 w-4" onChange={() => setExtraTable(0)} /> <span>No (RM 0)</span></label>
-                </div>
-              </div>
-
+  {/* Extra Table Section */}
+  <div>
+    <label className="block font-black uppercase mb-3 text-sm text-[#4a3728]">Add-ons: Tables (Only for those who include Delivery and Set Up)</label>
+    <div className="space-y-4">
+      <label className="flex items-start gap-3 cursor-pointer">
+        <input 
+          type="radio" 
+          name="tbl" 
+          className="mt-1 h-5 w-5 accent-[#d87a7a]" 
+          onChange={() => setExtraTable(0)} 
+        />
+        <span className="text-sm text-[#4a3728]/80">
+          <strong className="block text-[#4a3728]">No (+RM 0)</strong>
+          I have my own tables for my event
+        </span>
+      </label>
+      <label className="flex items-start gap-3 cursor-pointer">
+        <input 
+          type="radio" 
+          name="tbl" 
+          className="mt-1 h-5 w-5 accent-[#d87a7a]" 
+          onChange={() => setExtraTable(150)} 
+        />
+        <span className="text-sm text-[#4a3728]/80">
+          <strong className="block text-[#4a3728]">Yes (+RM 150)</strong>
+          I will need extra tables for my event
+        </span>
+      </label>
+    </div>
+  </div>
+</div>
               <div className="space-y-4">
                 <div>
                   <input 

@@ -3,8 +3,8 @@ import Hero from '../components/Hero'
 import Supply from '../components/Supply'
 import Booking from '../components/Booking'
 import MeetAnis from '../components/MeetAnis'
-import MenuCategories from '../components/MenuCategories'
 import LatestBooking from '../components/LatestBooking'
+import DessertPackage from '../components/DessertPackage'
 import { motion, useScroll, useTransform } from 'framer-motion';
 
 function HomePage() {
@@ -24,9 +24,9 @@ function HomePage() {
       </motion.div>
       <Booking />
       {/* <MeetAnis /> */}
-      <MenuCategories />
+      <DessertPackage />
       <LatestBooking /> 
-
+    
 
 
       

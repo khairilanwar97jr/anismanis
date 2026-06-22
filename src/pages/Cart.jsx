@@ -117,6 +117,15 @@ const Cart = () => {
 
   const handleProceed = () => {
     if (!customerInfo.name || !customerInfo.phone || !customerInfo.email) { alert("Please fill in your contact details."); return; }
+
+      // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(customerInfo.email)) {
+    alert("Please enter a valid email address.");
+    return;
+  }
+
     if (deliveryType === 'DELIVERY' && !isLocated) { alert("Please click 'LOCATE ON MAP' to confirm your delivery address."); return; }
     navigate('/checkout-summary', { state: { deliveryDetails, total, deliveryType, customerInfo, isLocated } });
   };

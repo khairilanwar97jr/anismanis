@@ -109,7 +109,7 @@ const handleFinalConfirm = async () => {
     delivery_address:
       deliveryType === 'DELIVERY'
         ? `${deliveryDetails.address}, ${deliveryDetails.postcode} ${deliveryDetails.city}, ${deliveryDetails.state}`
-        : "AnisManis Studio, Jalan Bumi U5/137, Pangsapuri Pelangi",
+        : "AnisManis Studio, Jalan Nova J U5/J, Subang Bestari",
 
     delivery_lat: deliveryDetails.lat || null,
     delivery_lng: deliveryDetails.lng || null,
@@ -290,7 +290,7 @@ const handleFinalConfirm = async () => {
                 {deliveryType === 'DELIVERY' ? 'Shipping Address' : 'Pickup Location'}
               </p>
               <p className="font-bold text-sm leading-relaxed bg-[#f9f5f2] p-3 rounded-xl border border-[#4a3728]/10">
-                {deliveryType === 'DELIVERY' ? `${deliveryDetails.address}, ${deliveryDetails.postcode} ${deliveryDetails.city}, ${deliveryDetails.state}` : "AnisManis Studio, Jalan Bumi U5/137, Pangsapuri Pelangi"}
+                {deliveryType === 'DELIVERY' ? `${deliveryDetails.address}, ${deliveryDetails.postcode} ${deliveryDetails.city}, ${deliveryDetails.state}` : "AnisManis Studio, Jalan Nova J U5/J, Subang Bestari"}
               </p>
             </div>
           </div>

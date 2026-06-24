@@ -14,11 +14,11 @@ function Navbar() {
         {/* Logo */}
         <Link to="/">
           <h1 style={{ fontFamily: "'Fraunces', serif" }}
-            className="text-5xl md:text-6xl font-black text-white italic leading-none tracking-tighter drop-shadow-md">
-            Anismanis
+            className="text-4xl md:text-6xl font-black text-white italic leading-none tracking-tighter drop-shadow-md">
+            Strawberry Cream
           </h1>
           <p className="text-sm md:text-base tracking-[0.5em] text-white/90 uppercase font-bold mt-3">
-            Cookies Cafe
+           Cafe
           </p>
         </Link>
 
